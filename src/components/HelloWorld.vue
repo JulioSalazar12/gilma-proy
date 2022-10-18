@@ -3,19 +3,19 @@
     <h1 class="my-5">View Leasing</h1>
     <v-card style="background-color: white;" light outlined elevation="0" class="pa-0 ma-0 mb-3 center">
       <v-container align="center">
-        <v-btn class="mx-2" color="orange" dark>
+        <v-btn elevation="0" class="mx-2" color="orange" dark>
           Guia
         </v-btn>
-        <v-btn class="mx-2" color="error" >
+        <v-btn elevation="0" class="mx-2" color="error" >
           Datos del prestamo
         </v-btn>
-        <v-btn class="mx-2" color="primary" >
+        <v-btn elevation="0" class="mx-2" color="primary" >
           Datos de gastos iniciales
         </v-btn>
-        <v-btn class="mx-2" color="green" dark >
+        <v-btn elevation="0" class="mx-2" color="green" dark >
           Datos de gastos periodicos
         </v-btn>
-        <v-btn class="mx-2" color="purple" dark>
+        <v-btn elevation="0" class="mx-2" color="purple" dark>
           Datos de costo de oportunidad
         </v-btn>
       </v-container>
@@ -137,7 +137,7 @@
           id:2,
           value: 0,
           valuePh: "sample",
-          valueLb:"N de añios",
+          valueLb:"N de años",
         },
         {
           id:3,
