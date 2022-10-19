@@ -21,97 +21,119 @@
       </v-container>
     </v-card>
     <v-card style="background-color: white;" light outlined>
-      <v-container>
-          <v-row>
-            <!-- columna seccion datos del usuario -->
-            <v-col class="4">
-              <v-text-field
-              type="number"
-              v-for="item in itemsCol1" :key="item.id"
-              class="my-2"
-              dense hide-details
-              :v-model="item.value"
-              :label="item.valueLb"
-              :placeholder="item.valuePh"
-              outlined
-              ></v-text-field>              
-            </v-col>
+      <v-form 
+        ref="form"
+        v-model="valid"
+        lazy-validation>
+        <v-container>
+            <v-row>
+              <!-- columna seccion datos del usuario -->
+              <v-col class="4">
+                <v-text-field                
+                required
+                :rules="nameRules"
+                type="number"
+                v-for="item in itemsCol1" :key="item.id"
+                class="my-2"
+                dense hide-details
+                v-model="item.value"
+                :label="item.valueLb"
+                :placeholder="item.valuePh"
+                outlined
+                ></v-text-field>              
+              </v-col>
 
-            <!-- columna seccion datos de gastos iniciales -->
-            <v-col class="4">
-              <v-text-field
-              type="number"
-              v-for="item in itemsCol2" :key="item.id"
-              class="my-2"
-              dense hide-details
-              :v-model="item.value"
-              :label="item.valueLb"
-              :placeholder="item.valuePh"
-              outlined
-              ></v-text-field>
-            </v-col>
-            
-            <!-- columna seccion datos de gastos peridicos &&&& datos de cosoto de oportunidad -->
-            <v-col class="4">
-              <v-text-field
-              type="number"
-              class="my-2"
-              dense hide-details
-              label="Comisión Periodica"
-              placeholder="0000.00"
-              outlined
-              ></v-text-field>
-              <v-text-field
-              type="number"
-              class="my-2"
-              dense hide-details
-              label="Porcentaje de seguro riesgo"
-              placeholder="0000.00"
-              outlined
-              ></v-text-field>
-              <v-text-field
-              type="number"
-              class="mt-14"
-              dense hide-details
-              label="Tasa de descuento KS"
-              placeholder="0000.00"
-              outlined
-              ></v-text-field>
-              <v-text-field
-              type="number"
-              class="my-2"
-              dense hide-details
-              label="Tasa de descuento WACC"
-              placeholder="0000.00"
-              outlined
-              ></v-text-field>                           
-              <v-container>
-                <v-row style="height:145px;">
-                  <v-col align-self="end">
-                    <v-btn
-                      dark
-                     color="orange"
-                     block elevation="0">
-                    <v-icon class="mr-3">mdi-table-sync</v-icon>
-                      Generar Tabla
+              <!-- columna seccion datos de gastos iniciales -->
+              <v-col class="4">
+                <v-text-field
+                required
+                :rules="nameRules"
+                type="number"
+                v-for="item in itemsCol2" :key="item.id"
+                class="my-2"
+                dense hide-details
+                v-model="item.value"
+                :label="item.valueLb"
+                :placeholder="item.valuePh"
+                outlined
+                ></v-text-field>
+              </v-col>
+              
+              <!-- columna seccion datos de gastos peridicos &&&& datos de cosoto de oportunidad -->
+              <v-col class="4">
+                <v-text-field
+                v-model="dataCP"
+                required
+                :rules="nameRules"
+                type="number"
+                class="my-2"
+                dense hide-details
+                label="Comisión Periodica"
+                placeholder="0000.00"
+                outlined
+                ></v-text-field>
+                <v-text-field
+                v-model="dataPSR"
+                required
+                :rules="nameRules"
+                type="number"
+                class="my-2"
+                dense hide-details
+                label="Porcentaje de seguro riesgo"
+                placeholder="0000.00"
+                outlined
+                ></v-text-field>
+                <v-text-field
+                v-model="dataTdKS"
+                required
+                :rules="nameRules"
+                type="number"
+                class="mt-14"
+                dense hide-details
+                label="Tasa de descuento KS"
+                placeholder="0000.00"
+                outlined
+                ></v-text-field>
+                <v-text-field
+                v-model="dataWACC"
+                required
+                :rules="nameRules"
+                type="number"
+                class="my-2"
+                dense hide-details
+                label="Tasa de descuento WACC"
+                placeholder="0000.00"
+                outlined
+                ></v-text-field>                           
+                <v-container>
+                  <v-row style="height:145px;">
+                    <v-col align-self="end">
+                      <v-btn
+                        dark
+                      color="orange"
+                      @click="validate"
+                      block elevation="0">
+                      <v-icon class="mr-3">mdi-table-sync</v-icon>
+                        Generar Tabla
+                        </v-btn>
+                    </v-col>
+                    <v-col align-self="end">
+                      <v-btn
+                        dark
+                      color="orange"
+                      block elevation="0">
+                        <v-icon class="mr-3">mdi-play</v-icon>
+                        Ver resultados
                       </v-btn>
-                  </v-col>
-                  <v-col align-self="end">
-                    <v-btn
-                      dark
-                     color="orange"
-                     block elevation="0">
-                      <v-icon class="mr-3">mdi-play</v-icon>
-                      Ver resultados
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-col>
-          </v-row>
-      </v-container>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-col>
+            </v-row>
+        </v-container>
+      </v-form>
     </v-card>
-    <v-card outlined class="mt-3">
+    <v-card v-if="enableValue" outlined class="mt-3">
       <v-data-table
         :headers="headers"
         :items="desserts"
@@ -126,52 +148,55 @@
     name: 'HelloWorld',
 
     data: () => ({
+      valid: true,
+      enableValue: false,
+      nameRules: [v => !!v],
       itemsCol1 : [
         {
           id:1,
-          value: 0,
+          value: "",
           valuePh: "0000.00",
           valueLb:"Precio de venta del activo",
         },
         {
           id:2,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"N de años",
         },
         {
           id:3,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"Frecuencia de pago",
         },
         {
           id:4,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"N de dias por año",
         },
         {
           id:5,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"% de TEA",
         },
         {
           id:6,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"% IGV",
         },
         {
           id:7,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"% Impuesto a la renta",
         },
         {
           id:8,
-          value: 0,
+          value: "",
           valuePh: "sample",
           valueLb:"% de recompra",
         },
@@ -179,129 +204,177 @@
       itemsCol2: [
         {
           id: 1,
-          value: 0   ,
+          value: ""   ,
           valueLb: "Costes Notariales" ,
           valuePh: "0000.00" ,
         },
         {
           id: 2,
-          value: 0   ,
+          value: ""   ,
           valueLb: "Costes Registrales" ,
           valuePh: "0000.00" ,
         },
         {
           id: 3,
-          value: 0   ,
+          value: ""   ,
           valueLb: "Tasación" ,
           valuePh: "0000.00" ,
         },
         {
           id: 4,
-          value: 0   ,
+          value: ""   ,
           valueLb: "Comisión de Estudio" ,
           valuePh: "0000.00" ,
         },
         {
           id: 5,
-          value: 0   ,
+          value: ""   ,
           valueLb: "Comisión de Activación" ,
           valuePh: "0000.00" ,
         },
       ],
+      dataCP: "",
+      dataPSR: "",
+      dataTdKS: "",
+      dataWACC: "",
       headers: [
-          { text: 'N°', align: 'start', sortable: false, value: 'name' },
-          { text: 'P.G.', value: 'calories' },
-          { text: 'Saldo Inicial', value: 'fat' },
-          { text: 'Interes', value: 'carbs' },
-          { text: 'Cuota', value: 'protein' },
-          { text: 'Amort.', value: 'iron' },
-          { text: 'Seguro Interno', value: 'iron' },
-          { text: 'Comision', value: 'iron' },
-          { text: 'Recompesa', value: 'iron' },
-          { text: 'Saldo Final', value: 'iron' },
+          { text: 'N°',                 value: 'name', align: 'start', sortable: false },
+          { text: 'P.G.',               value: 'dataPG' },
+          { text: 'Saldo Inicial',      value: 'dataSI' },
+          { text: 'Interes',            value: 'dataI' },
+          { text: 'Cuota',              value: 'dataC' },
+          { text: 'Amort.',             value: 'dataA' },
+          { text: 'Seguro Riesgo',      value: 'dataSR' },
+          { text: 'Comision',           value: 'dataComi' },
+          { text: 'Recompra',           value: 'dataRecom' },
+          { text: 'Saldo Final',        value: 'dataSF' },
+          { text: 'Depreciación',       value: 'dataDepre' },
+          { text: 'Ahorro Tributario',  value: 'dataAhoro' },
+          { text: 'IGV',                value: 'dataIGV' },
+          { text: 'Flujo Bruto',        value: 'dataFb' },
+          { text: 'Flujo con IGV',      value: 'dataFIGV' },
+          { text: 'Flujo Neto',         value: 'dataN' },
         ],
         desserts: [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0,
-            iron: '1%',
+            name: '1',
+            dataPG: 159,
+            dataSI: 6.0,
+            dataI: 24,
+            dataC: 4.0,
+            dataA: '1%',
+            dataSR: '45.25',
+            dataComi: '45.25',
+            dataRecom: '45.25',
+            dataSF: '45.25',
+            dataDepre: '45.25',
+            dataAhoro: '45.25',
+            dataIGV: '45.25',
+            dataFb: '45.25',
+            dataFIGV: '45.25',
+            dataN: '45.25',
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3,
-            iron: '1%',
+            name: '1',
+            dataPG: 159,
+            dataSI: 6.0,
+            dataI: 24,
+            dataC: 4.0,
+            dataA: '1%',
+            dataSR: '45.25',
+            dataComi: '45.25',
+            dataRecom: '45.25',
+            dataSF: '45.25',
+            dataDepre: '45.25',
+            dataAhoro: '45.25',
+            dataIGV: '45.25',
+            dataFb: '45.25',
+            dataFIGV: '45.25',
+            dataN: '45.25',
           },
           {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0,
-            iron: '7%',
+            name: '1',
+            dataPG: 159,
+            dataSI: 6.0,
+            dataI: 24,
+            dataC: 4.0,
+            dataA: '1%',
+            dataSR: '45.25',
+            dataComi: '45.25',
+            dataRecom: '45.25',
+            dataSF: '45.25',
+            dataDepre: '45.25',
+            dataAhoro: '45.25',
+            dataIGV: '45.25',
+            dataFb: '45.25',
+            dataFIGV: '45.25',
+            dataN: '45.25',
           },
           {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3,
-            iron: '8%',
+            name: '1',
+            dataPG: 159,
+            dataSI: 6.0,
+            dataI: 24,
+            dataC: 4.0,
+            dataA: '1%',
+            dataSR: '45.25',
+            dataComi: '45.25',
+            dataRecom: '45.25',
+            dataSF: '45.25',
+            dataDepre: '45.25',
+            dataAhoro: '45.25',
+            dataIGV: '45.25',
+            dataFb: '45.25',
+            dataFIGV: '45.25',
+            dataN: '45.25',
           },
           {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9,
-            iron: '16%',
-          },
-          {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0,
-            iron: '0%',
-          },
-          {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0,
-            iron: '2%',
-          },
-          {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5,
-            iron: '45%',
-          },
-          {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9,
-            iron: '22%',
-          },
-          {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7,
-            iron: '6%',
+            name: '1',
+            dataPG: 159,
+            dataSI: 6.0,
+            dataI: 24,
+            dataC: 4.0,
+            dataA: '1%',
+            dataSR: '45.25',
+            dataComi: '45.25',
+            dataRecom: '45.25',
+            dataSF: '45.25',
+            dataDepre: '45.25',
+            dataAhoro: '45.25',
+            dataIGV: '45.25',
+            dataFb: '45.25',
+            dataFIGV: '45.25',
+            dataN: '45.25',
           },
         ],
     }),
+    methods: {
+      validate () {
+        let sample = {
+          dataPVA:  parseInt(this.itemsCol1[0].value),
+          dataNA:   parseInt(this.itemsCol1[1].value),
+          dataFP:   parseInt(this.itemsCol1[2].value),
+          dataNDA:  parseInt(this.itemsCol1[3].value),
+          dataPTEA: parseInt(this.itemsCol1[4].value),
+          dataIGV:  parseInt(this.itemsCol1[5].value),
+          dataPIR:  parseInt(this.itemsCol1[6].value),
+          dataPR:   parseInt(this.itemsCol1[7].value),
+          dataCN:   parseInt(this.itemsCol2[0].value),
+          dataCR:   parseInt(this.itemsCol2[1].value),
+          dataT:    parseInt(this.itemsCol2[2].value),
+          dataCE:   parseInt(this.itemsCol2[3].value),
+          dataCA:   parseInt(this.itemsCol2[4].value),
+          dataCP:   parseInt(this.dataCP),
+          dataPSR:  parseInt(this.dataPSR),
+          dataTdKS: parseInt(this.dataTdKS),  
+          dataWACC: parseInt(this.dataWACC),  
+        }
+        if (this.$refs.form.validate()==true){
+          console.log("Data POST:", sample);
+          this.enableValue = true;
+        }
+        
+      },      
+    }
   }
 </script>
